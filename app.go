@@ -2,6 +2,7 @@ package fcm
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go"
@@ -42,6 +43,10 @@ func (app App) SendMessage(
 	registrationToken string,
 	title string,
 	body string) error {
+
+	if app.firebaseApp == nil {
+		return fmt.Errorf("Cannot send message, failed at initialization")
+	}
 
 	message := &messaging.Message{
 		Notification: &messaging.Notification{
