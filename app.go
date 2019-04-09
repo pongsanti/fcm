@@ -18,27 +18,27 @@ type App struct {
 	messagingClient *messaging.Client
 }
 
-func NewApp() (*App, error) {
+func NewApp() (App, error) {
 	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
 		log.Printf("error initializing app: %v\n", err)
-		return nil, err
+		return App{}, err
 	}
 
 	ctx := context.Background()
 	client, err := app.Messaging(ctx)
 	if err != nil {
 		log.Printf("error getting Messaging client: %v\n", err)
-		return nil, err
+		return App{}, err
 	}
 
-	return &App{
+	return App{
 		firebaseApp:     app,
 		messagingClient: client,
 	}, err
 }
 
-func (app *App) SendMessage(
+func (app App) SendMessage(
 	registrationToken string,
 	title string,
 	body string) error {
