@@ -41,8 +41,7 @@ func NewApp() (App, error) {
 
 func (app App) SendMessage(
 	registrationToken string,
-	title string,
-	body string) error {
+	title string, body string, data map[string]string) error {
 
 	if app.firebaseApp == nil {
 		return fmt.Errorf("Cannot send message, failed at initialization")
@@ -54,6 +53,10 @@ func (app App) SendMessage(
 			Body:  body,
 		},
 		Token: registrationToken,
+	}
+
+	if data != nil {
+		message.Data = data
 	}
 
 	response, err := app.messagingClient.Send(context.Background(), message)
